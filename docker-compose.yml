@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  hadoop-test:
+    build:
+      context: .
+    container_name: hadoop-test
+    ports:
+      - 8088:8088
+      - 9864:9864
+      - 9870:9870
+    volumes:
+      - ./:/app
