@@ -1,11 +1,4 @@
-# FROM ubuntu:18.04
-
-# RUN apt-get update -y \
-#     && export DEBIAN_FRONTEND=noninteractive && apt-get install -y --no-install-recommends \
-#         sudo \
-#         wget \
-#         openjdk-8-jdk \
-#     && apt-get clean
+# FROM https://hub.docker.com/_/eclipse-temurin/ using UBUNTU as base image
 FROM eclipse-temurin:8-jdk-focal
 RUN apt-get update -y \
     && export DEBIAN_FRONTEND=noninteractive && apt-get install -y --no-install-recommends \
@@ -14,6 +7,11 @@ RUN apt-get update -y \
         ssh \
     && apt-get clean
 RUN useradd -m hduser && echo "hduser:supergroup" | chpasswd && adduser hduser sudo && echo "hduser     ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && cd /usr/bin/ && sudo ln -s python3 python
+
+# Installing Python
+RUN apt-get update && apt-get install -y python3.6 python3-distutils python3-pip python3-apt
+
+# Config keys for users
 COPY ssh_config /etc/ssh/ssh_config
 
 WORKDIR /home/hduser
@@ -21,6 +19,8 @@ USER hduser
 RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && chmod 0600 ~/.ssh/authorized_keys
 ENV HADOOP_VERSION=3.3.3
 ENV HADOOP_HOME /home/hduser/hadoop-${HADOOP_VERSION}
+
+# Installing Hadoop
 RUN curl -sL --retry 3 \
   "http://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz" \
   | gunzip \
