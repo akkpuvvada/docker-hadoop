@@ -44,9 +44,35 @@ It should show following output
 
 # Examples
 
-## Example to run using Java
+> [!Warning]
+> Please follow all the steps in same sequence. Also do not miss the file formattings
+## Example to run using Mapreduce job using python
+. Navigate to examples folder
+> cd /app/examples
 
-. Make HDFS directories required to execute MapReduce jobs:
+. Create directory in HDFS DFS
+```
+hdfs dfs -mkdir /user
+hdfs dfs -mkdir /user/hduser
+```
+
+. Create input directory and copy files
+
+> [!Warning]
+> Make sure the input files EOL sequence is LF and format of the file is UTF-8
+
+```
+hdfs dfs -mkdir input
+hdfs dfs -put *.txt input
+```
+
+. Run the command to check the working of Mapreduce job with python
+. We are using hadoop-streaming tool for integrating python
+> hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.3.jar -mapper mapper.py -reducer reducer.py -input /user/hduser/input/*.txt -output /user/hduser/output
+
+## Example to run Mapreduce job using using Java (OPTIONAL)
+
+. Make HDFS directories required to execute MapReduce jobs: [Skip this if you already executed with python above]
 
 ```
 hdfs dfs -mkdir /user
@@ -60,6 +86,4 @@ hdfs dfs -put $HADOOP_HOME/etc/hadoop/*.xml input
 ```
 
 . Run the Example now and check the output it should print the bytes read from file
-> hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0 jar grep input output ‘dfs[a-z.]+’
-
-## Example to run using python
+> hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.3.jar grep input output ‘dfs[a-z.]+’
