@@ -31,6 +31,9 @@ or
 Open VS code and change the docker-entrypoint.sh extension on the bottom Find below image for reference
 ![image](./Screenshots/lineEnding.png)
 
+### Step for Root Users/MAC - Update the permissions for docker-entrypoint.sh file
+Go to the folder containing the files for docker and run this command
+> chmod 777 ./docker-entrypoint.sh
 ## Step 5 - Open the CMD at project path and execute following commands
 The following command is for running the container everytime.
 > docker-compose up -d
