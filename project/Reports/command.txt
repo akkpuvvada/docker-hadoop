@@ -1,0 +1,5 @@
+hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
+  -input /user/hduser/projInput/COVID-19_Case_Surveillance_Public_Use_Data_with_Geography.csv \
+  -output /user/hduser/output/test.txt \
+  -mapper "python mapReduce.py" \
+  -reducer "python mapReduce.py"
